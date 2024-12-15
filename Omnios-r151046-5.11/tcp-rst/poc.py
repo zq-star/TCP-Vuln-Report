@@ -57,25 +57,25 @@ def callback(hdr,data):
         return
     try:
         packet = EthDecoder().decode(data)
-        if packet is None:
-            return
-        l2 = packet.child()
-        if isinstance(l2,IP):
-            l3 = l2.child()
-            #Due to the filter used, all packets should use TCP
-            src_ip = l2.get_ip_src()
-            dst_ip = l2.get_ip_dst()
-            tcp_src_port = l3.get_th_sport()
-            tcp_dst_port = l3.get_th_dport()
-            tcp_syn = l3.get_th_seq()
-            tcp_ack = l3.get_th_ack()
-            if l3.get_ACK() and l3.get_PSH() and tcp_src_port == SERVER_CMD_PORT:            
-                last_new_ports[tcp_src_port] = process_cmd_pa_packet(l3)
-            if l3.get_SYN() and tcp_dst_port == LEARNER_PORT:
-                #process_cmd_pa_packet()
-                last_syn_responses[tcp_dst_port] = [tcp_src_port, tcp_dst_port, tcp_syn, tcp_ack]
-    except Exception as e:
+    except Exception:
         return
+    if packet is None:
+        return
+    l2 = packet.child()
+    if isinstance(l2,IP):
+        l3 = l2.child()
+        #Due to the filter used, all packets should use TCP
+        src_ip = l2.get_ip_src()
+        dst_ip = l2.get_ip_dst()
+        tcp_src_port = l3.get_th_sport()
+        tcp_dst_port = l3.get_th_dport()
+        tcp_syn = l3.get_th_seq()
+        tcp_ack = l3.get_th_ack()
+        if l3.get_ACK() and l3.get_PSH() and tcp_src_port == SERVER_CMD_PORT:            
+            last_new_ports[tcp_src_port] = process_cmd_pa_packet(l3)
+        if l3.get_SYN() and tcp_dst_port == LEARNER_PORT:
+            #process_cmd_pa_packet()
+            last_syn_responses[tcp_dst_port] = [tcp_src_port, tcp_dst_port, tcp_syn, tcp_ack]
             
 def process_cmd_pa_packet(l3):
     sut_port = 30000
@@ -163,12 +163,13 @@ def main():
         init_rand_seq = random.randint(0, SERVER_WINDOWS)
         for i in range(n):
             seq = init_rand_seq + i * SERVER_WINDOWS
-            syn_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="S", seq = seq)
-            send(syn_unvalid)
-        # syn_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="S", seq=ack1.ack + 70000, ack=ack1.seq + 70000)
-        #syn_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="S", seq=rand_seq_unvalid)
-        # send(syn_unvalid)
+            rst_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="R", seq = seq)
+            send(rst_unvalid)
+        # rst_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="R", seq=ack1.ack + 60000)
+        # send(rst_unvalid)
         push_ack2 = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="PA", seq=ack1.ack, ack=ack1.seq)/Raw(b'\x01')
         send(push_ack2)
+    print ("packets sending finished")
+    
 if __name__ == "__main__":
     main()
