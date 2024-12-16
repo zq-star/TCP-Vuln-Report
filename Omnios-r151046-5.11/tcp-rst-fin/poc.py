@@ -163,10 +163,10 @@ def main():
         init_rand_seq = random.randint(0, SERVER_WINDOWS)
         for i in range(n):
             seq = init_rand_seq + i * SERVER_WINDOWS
-            rst_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="R", seq = seq)
-            send(rst_unvalid)
-        # rst_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="R", seq=ack1.ack + 60000)
-        # send(rst_unvalid)
+            rst_fin_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="RF", seq = seq)
+            send(rst_fin_unvalid)
+        # rst_fin_unvalid = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="RF", seq=ack1.ack + 60000)
+        # send(rst_fin_unvalid)
         push_ack2 = ScapyIP(dst=SERVER_ADDR) / ScapyTCP(sport=syn_packet[1], dport=syn_packet[0], flags="PA", seq=ack1.ack, ack=ack1.seq)/Raw(b'\x01')
         send(push_ack2)
     print ("packets sending finished")
