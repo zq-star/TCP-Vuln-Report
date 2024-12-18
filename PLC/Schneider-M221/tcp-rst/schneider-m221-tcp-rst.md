@@ -1,5 +1,5 @@
 # Description
-Schneider Modicon TM221CE40T with firmware version V1.13.0.1 has a denial of service vulnerability. When processing TCP RST packets, PLC M221 will wrongly accept RST packets with arbitrary sequence numbers, which violates RFC793. This vulnerability allows attackers to send forged TCP RST packets, thereby interrupting normal connections and causing a denial of service attack.
+Schneider Modicon TM221CE40T with firmware version V1.13.0.1 has a denial of service vulnerability. When processing TCP RST packets, PLC M221 will incorrectly accept RST packets with arbitrary sequence numbers, which violates RFC793. This vulnerability allows attackers to send forged TCP RST packets, thereby interrupting normal connections and causing a denial of service attack.
 
 # Reproduction
 ## Environment
