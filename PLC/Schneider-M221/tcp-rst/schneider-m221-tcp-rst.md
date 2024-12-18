@@ -3,18 +3,9 @@ Schneider Modicon TM221CE40T with firmware version V1.13.0.1 has a denial of ser
 
 # Reproduction
 ## Environment
-* Test machine - virtual machine 1: The system is not limited, such as Ubuntu system. Python, scapy, pcapy, impacket environments are installed. IP1: 192.168.56.104 
-* Target system - virtual machine 2: OmniOS operating system. GCC runtime environment is installed. IP2: 192.168.56.112 
-* The two virtual machines can communicate over the network.
-
-## Experiment Overview
-Virtual machine 1 sends a packet or system call to virtual machine 2 of the omnios system. The sending sequence is CONNECT, SYN+ACK(V, V), PUSH+ACK(V, V), RST(INV, 0) and PUSH+ACK(V, V). The response of virtual machine 2 after receiving RST(INV, 0) packet is mainly observed. If the connection is interrupted after receiving RST(INV, 0) packet, there is a vulnerability. 
-* Note1: CONNECT means notifying virtual machine 2 to system call connect as a client and send a new SYN packet. The remaining SYN+ACK(V, V), PUSH+ACK(V, V), RST(INV, 0) and PUSH+ACK(V, V) represent TCP packets of different flags. The first bit in the bracket represents the sequence number, and the second bit represents the acknowledgment number. Each bit is divided into two categories: V and INV. V means valid - this value is equal to the expected exact value of normal communication, and INV means invalid - this value does not exactly match the expected exact value and is within the receiving window range.In particular, 0 means - the value is 0.
-* Note2: The sending of RST(INV, 0) refers to sending multiple RST packets with different sequence numbers, where the sequence number value is a random initial value within 0 - receive windows, and  all window intervals of entire sequence number space are traversed with receive window as the incremental interval, so as to ensure that a RST packet can hit the expected receive window range.
-
-## Files Preparation
-* File [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Omnios-r151046-5.11/tcp-rst/poc.py): Located in test machine - virtual machine 1 environment. Poc is responsible for sending corresponding data packets according to specified order. 
-* File [socketAdapter.c](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Omnios-r151046-5.11/SutAdapter/socketAdapter.c)[^socketAdapterCode]: Located in target system - virtual machine 2 environment. System call may be required in the implementation of TCP. The socketAdapter.c file is mainly responsible for identifying received commands and making system calls according to commands. For example: if “connect” is received, virtual machine 2 will initiate a connection as a client. In addition, socketAdapter.c will generate new port value of actual communication process and pass it to the test end-virtual machine 1, which will be used as the communication port of target system end.
+* Test host: IP1 - 192.168.1.31
+* PLC M221: TCP communication open port - 502; IP2 - 192.168.1.221
+* The test host and PLC M221 are directly connected via a network cable.
 
 ## Reproduction steps
 1. In target system - virtual machine 2:
