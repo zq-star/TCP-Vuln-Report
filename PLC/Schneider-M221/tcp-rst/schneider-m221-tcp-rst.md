@@ -11,7 +11,7 @@ Schneider Modicon TM221CE40T with firmware version V1.13.0.1 has a denial of ser
 1. In test host:
    * Run `sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP`. This step is to avoid interference caused by automatic packet sending by system kernel of virtual machine 1.
    * Run `sudo python poc.py`. 
-3. Capture packets to observe communication process during running [poc.py]():
+3. Capture packets to observe communication process during running [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/PLC/Schneider-M221/tcp-rst/poc.py):
    * Test host establishes a TCP connection with PLC.
    * Test host sends an ACK packet with a matching sequence number, and PLC does not respond normally.
    * Test host sends a RST with an arbitrary sequence number to PLC, trying to terminate the connection.
