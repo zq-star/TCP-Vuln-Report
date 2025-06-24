@@ -19,11 +19,11 @@ Virtual machine 1 sends a packet or system call to virtual machine 2 of the Open
 ## Reproduction steps
 1. In target system - virtual machine 2:
    * Run `gcc -Wall -pthread -o socketAdapter.o socketAdapter.c -lnsl -lsocket`. Compile socketAdapter.c and generate the socketAdapter.o executable file. 
-   * Run `sudo nice -19 ./socketAdapter.o -a 192.168.56.104 -l 5000 -p 20000`. Make target system in state of listening to commands.
+   * Run `sudo nice -19 ./socketAdapter.o -a 192.168.56.111 -l 5000 -p 20000`. Make target system in state of listening to commands.
 2. In test machine - virtual machine 1:
    * Run `sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP`. This step is to avoid interference caused by automatic packet sending by system kernel of virtual machine 1.
-   * Run `sudo python poc.py`. The [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Omnios-r151046-5.11/tcp-rst/poc.py) sends packets of specified types in order: CONNECT, SYN+ACK(V, V), PUSH+ACK(V, V), RST(INV, 0), and PUSH+ACK(V, V).
-3. Capture packets to observe responses of omnios system - virtual machine 2 during running [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Omnios-r151046-5.11/tcp-rst/poc.py):
+   * Run `sudo python poc-rst.py` or `sudo python poc-syn.py`. The [poc-rst.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/tcp-rst-syn/poc-rst.py) sends packets of specified types in order: CONNECT, SYN+ACK(V, V), PUSH+ACK(V, V), RST(INV, 0), and PUSH+ACK(V, V). The [poc-syn.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/tcp-rst-syn/poc-syn.py) sends packets of specified types in order: CONNECT, SYN+ACK(V, V), PUSH+ACK(V, V), SYN(INV, 0), and PUSH+ACK(V, V).
+3. Capture packets to observe responses of Openindiana system - virtual machine 2 during running poc file. When [poc-rst.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/tcp-rst-syn/poc-rst.py):
 ![packets](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Omnios-r151046-5.11/pictures/tcp-rst-1.jpg)
    * First, a socket connection is automatically established to pass command, and virtual machine 2 transmits actual communication port of local end，which is used for the following communication test of packets in order.
    * Virtual machine 1 sends CONNECT and SYN+ACK(V, V), virtual machine 2 responds with SYN and ACK respectively. At this time, TCP has established a connection.
