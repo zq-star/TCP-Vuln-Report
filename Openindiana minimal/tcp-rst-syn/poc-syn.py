@@ -18,7 +18,7 @@ import re
 
 # 配置信息
 SERVER_WINDOWS = 60000
-SERVER_ADDR = '192.168.56.112'  # SUT IP地址
+SERVER_ADDR = '192.168.56.105'  # SUT IP地址
 SERVER_CMD_PORT = 5000  # 连接的CMD socket的目的端口，用于传递指令
 LEARNER_PORT = 20000 #学习端的端口
 WAIT_TIME = 0.6 #抓包等待时间
