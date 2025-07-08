@@ -1,10 +1,10 @@
 # Description
-Schneider Modicon M340 with firmware version SV03.60 has a denial of service vulnerability. When processing TCP RST packets, PLC M340 will incorrectly accept RST packets with arbitrary sequence numbers, which violates RFC793. This vulnerability allows attackers to send forged TCP RST packets, thereby interrupting normal connections and causing a denial of service attack.
+Delta DVP80ES3 has a denial of service vulnerability. When processing TCP RST/SYN packets, PLC DVP80ES3 will incorrectly accept RST packets with arbitrary sequence numbers, which violates RFC793. This vulnerability allows attackers to send forged TCP RST packets, thereby interrupting normal connections and causing a denial of service attack.
 
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC M221: TCP communication open port - 502; IP2 - 192.168.1.34
+* PLC M221: TCP communication open port - 502; IP2 - 192.168.1.5
 * The test host and PLC M340 are directly connected via a network cable.
 
 ## Reproduction steps
