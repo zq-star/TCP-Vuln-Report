@@ -18,7 +18,7 @@ AT_NA2000 from Nanda Automation Technology vendor has a denial of service vulner
 ![packets2](https://github.com/zq-star/TCP-Vuln-Report/blob/master/PLC/pictures/at-na2000/na2000-tcp-rst-2.png)
    * Test host sends multiple RST packets with different sequence numbers to PLC, trying to terminate the connection. Generate an initial sequence number within 0 - current receive window value, and increment by the window value to traverse all window intervals in entire sequence number space. The window size tested is 8196. (For intuitiveness, the above picture shows the RST packet directly sent with a sequence number within the receive window.)
 ![packets3](https://github.com/zq-star/TCP-Vuln-Report/blob/master/PLC/pictures/at-na2000/na2000-tcp-rst-3.png)
-   * Test host sends an ACK packet with a matching sequence number to PLC again, to verify whether the connection is disconnected. PLC responds with an RST+ACK to test host, indicating that the connection is disconnected.
+   * Test host sends an ACK packet with a matching sequence number to PLC again, to verify whether the connection is disconnected. PLC responds with a RST+ACK to test host, indicating that the connection is disconnected.
 ![packets4](https://github.com/zq-star/TCP-Vuln-Report/blob/master/PLC/pictures/at-na2000/na2000-tcp-rst-4.png)
   
 The above process demonstrates that a RST packet with a sequence number within the current receive window can directly disconnect the TCP connection, causing the connection to be interrupted.
