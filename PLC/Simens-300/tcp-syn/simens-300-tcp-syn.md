@@ -4,7 +4,7 @@ PLC Simens-300 with firmware version v3.3.17 has a denial of service vulnerabili
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC Simens-300: TCP communication open port - 502; IP2 - 192.168.1.201
+* PLC Simens-300: TCP communication open port - 102; IP2 - 192.168.1.201
 * The test host and PLC Simens-300 are directly connected via a network cable.
 
 ## Reproduction steps
