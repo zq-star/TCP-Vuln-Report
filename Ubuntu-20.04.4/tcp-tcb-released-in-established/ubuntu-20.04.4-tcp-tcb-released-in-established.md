@@ -1,5 +1,5 @@
 # Description
-Ubuntu 20.04.4, kernel 5.15.0-124-generic has a connection hijacking vulnerability. In SYN-SENT STATE, after receiving a valid ACK+RST to close the connection, the system should move into CLOSE STATE and delete Transmission Control Block (TCB). However, on Ubuntu 11, TCB created earlier is not fully deleted. As a result, it still directly accepts new SYN connection requests instead of requiring an open call. An attacker can exploit residual TCB information to forge new SYN requests and achieve connection hijacking.
+Ubuntu 20.04.4, kernel 5.15.0-124-generic has a connection hijacking vulnerability. In ESTABLISHED STATE, after receiving a valid RST to close the connection, the system should move into CLOSE STATE and delete Transmission Control Block (TCB). However, on Ubuntu 11, TCB created earlier is not fully deleted. As a result, it still directly accepts new SYN connection requests instead of requiring an open call. An attacker can exploit residual TCB information to forge new SYN requests and achieve connection hijacking.
 
 # Reproduction
 ## Environment
@@ -8,7 +8,7 @@ Ubuntu 20.04.4, kernel 5.15.0-124-generic has a connection hijacking vulnerabili
 * The two virtual machines can communicate over the network.
 
 ## Experiment Overview
-Virtual machine 1 sends a packet or system call to virtual machine 2 of the Ubuntu system. The sending sequence is CONNECT, ACK+RST(V, V), SYN(INV, 0). The response of virtual machine 2 after receiving SYN(INV, 0) is mainly observed. If virtual machine 2 directly accepts the new SYN request, a connection hijacking vulnerability exists.
+Virtual machine 1 sends a packet or system call to virtual machine 2 of the Ubuntu system. The sending sequence is LISTEN, SYN(V, V), ACK(INV, 0). The response of virtual machine 2 after receiving SYN(INV, 0) is mainly observed. If virtual machine 2 directly accepts the new SYN request, a connection hijacking vulnerability exists.
 
 * Note1: CONNECT means notifying virtual machine 2 to system call connect as a client. The remaining ACK+RST(V, V) and SYN(INV, 0) represent TCP packets of different flags. The first bit in the bracket represents the sequence number, and the second bit represents the acknowledgment number. Each bit is divided into two categories: V and INV. ​​In general​​, V means valid - this value is equal to the expected exact value of normal communication, and INV means invalid - this value does not exactly match the expected exact value and is within the receiving window range. 0 means - the value is 0.
 
