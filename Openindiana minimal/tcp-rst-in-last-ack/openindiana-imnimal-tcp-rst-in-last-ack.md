@@ -21,7 +21,7 @@ Virtual machine 1 sends a packet or system call to virtual machine 2 of the Open
    * Run `sudo nice -19 ./socketAdapter.o -a 192.168.56.111 -l 5000 -p 20000`. Make target system in state of listening to commands.
 2. In test machine - virtual machine 1:
    * Run `sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP`. This step is to avoid interference caused by automatic packet sending by system kernel of virtual machine 1.
-   * Run `sudo python poc.py`. The [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/tcp-rst-in-last-ack/poc.py) sends packets of specified types in order: LISTEN, SYN(V,0), ACK(V,V), ACCEPT, CLOSECONNECTION, RST(INV, 0).
+   * Run `sudo python poc.py`. The [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/tcp-rst-in-last-ack/poc.py) sends packets of specified types in order: LISTEN, SYN(V,0), ACK(V,V), FIN+ACK(V, V), ACCEPT, CLOSECONNECTION, RST(INV, 0).
 3. Capture packets to observe responses of Openindiana system - virtual machine 2 during running [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/tcp-rst-in-last-ack/poc.py):
 ![packets](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Openindiana%20minimal/pictures/tcp-rst-in-last-ack-1.png)
    * First, a socket connection is automatically established to pass command, and virtual machine 2 transmits actual communication port of local end，which is used for the following communication test of packets in order.
