@@ -3,7 +3,7 @@ Windows 11, kernel 22621.2861 has a connection hijacking vulnerability. In SYN-S
 
 # Reproduction
 ## Environment
-* Test machine - virtual machine 1: The system is not limited, such as Ubuntu system. Python, scapy, pcapy, impacket environments are installed. IP1: 192.168.56.111 
+* Test machine - virtual machine 1: The system is not limited, such as Ubuntu system. Python, scapy, pcapy, impacket environments are installed. IP1: 192.168.56.104 
 * Target system - virtual machine 2: Windows operating system. GCC runtime environment is installed. IP2: 192.168.56.115
 * The two virtual machines can communicate over the network.
 
