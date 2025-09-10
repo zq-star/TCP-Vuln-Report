@@ -30,7 +30,7 @@ Virtual machine 1 sends a packet or system call to virtual machine 2 of the Wind
    * Virtual machine 1 sends CONNECT, virtual machine 2 responds with SYN. At this time, virtual machine 2 is in SYN-SENT STATE.
    * Virtual machine 1 sends SYN(V, V), virtual machine 2 responds with SYN+ACK. At this time, virtual machine 2 is in SYN-RECEIVED STATE.
    * Virtual machine 1 sends RST(V, 0) to close the current connection.
-   * Virtual machine 1 sends a CONNECT system call command again. Virtual machine 2 responds with a SYN packet using the same local communication port as the previous connection, indicating the flaw of port reuse. This issue can lead to a denial of service attack.
+   * Virtual machine 1 sends a CONNECT system call command again. Virtual machine 2 responds with a SYN packet using the same local communication port as the previous connection, indicating the flaw of port reuse. An attacker can exploit this fixed port behavior, sending a large number of malicious requests to target port, which overloads the port and exhausts resources.
   
 [^socketAdapterCode]: Minor changes based on work of [ Fiterău-Broştean, Paul, Ramon Janssen, and Frits Vaandrager. "Combining model learning and model checking to analyze TCP implementations." Computer Aided Verification: 28th International Conference, CAV 2016, Toronto, ON, Canada, July 17-23, 2016, Proceedings, Part II 28. Springer International Publishing, 2016. ]
 
