@@ -1,5 +1,5 @@
 # Description
-Ubuntu 20.04.4, kernel 5.15.0-124-generic has a connection hijacking vulnerability. In ESTABLISHED STATE, after receiving a valid RST to close the connection, the system should move into CLOSE STATE and delete Transmission Control Block (TCB). However, on Ubuntu 11, TCB created earlier is not fully deleted. As a result, it still directly accepts new SYN connection requests instead of requiring an open call. An attacker can exploit residual TCB information to forge new SYN requests and achieve connection hijacking.
+Ubuntu 20.04.4, kernel 5.15.0-124-generic has a connection hijacking vulnerability. In ESTABLISHED STATE, after receiving a valid RST to close the connection, the system should move into CLOSE STATE and delete Transmission Control Block (TCB). However, on Ubuntu, TCB created earlier is not fully deleted. As a result, it still directly accepts new SYN connection requests instead of requiring an open call. An attacker can exploit residual TCB information to forge new SYN requests and achieve connection hijacking.
 
 # Reproduction
 ## Environment
