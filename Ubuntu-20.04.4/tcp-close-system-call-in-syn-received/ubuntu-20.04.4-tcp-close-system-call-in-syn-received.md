@@ -1,14 +1,14 @@
 # Description
-Windows 11, kernel 22621.2861 has a system stability degradation vulnerability. When the CLOSE command is invoked in SYN-RECEIVED STATE with no pending data, Windows does not respond instead of properly responding with a FIN and transitioning to the FIN-WAIT-1. This causes confusion in connection state management and may lead to system stability degradation.
+Ubuntu 20.04.4, kernel 5.15.0-124-generic has a system stability degradation vulnerability. When the CLOSE command is invoked in SYN-RECEIVED STATE with no pending data, Ubuntu does not respond instead of properly responding with a FIN and transitioning to the FIN-WAIT-1. This causes confusion in connection state management and may lead to system stability degradation.
 
 # Reproduction
 ## Environment
 * Test machine - virtual machine 1: The system is not limited, such as Ubuntu system. Python, scapy, pcapy, impacket environments are installed. IP1: 192.168.56.104
-* Target system - virtual machine 2: Windows operating system. GCC runtime environment is installed. IP2: 192.168.56.115
+* Target system - virtual machine 2: Ubuntu operating system. GCC runtime environment is installed. IP2: 192.168.56.114
 * The two virtual machines can communicate over the network.
 
 ## Experiment Overview
-Virtual machine 1 sends a packet or system call to virtual machine 2 of the Windows system. The sending sequence is LISTEN, SYN(V,0), CLOSE. The response of virtual machine 2 after invoking CLOSE system call command is mainly observed. If virtual machine 2 does not respond a FIN segment after invoking CLOSE, there is a vulnerability. 
+Virtual machine 1 sends a packet or system call to virtual machine 2 of the Ubuntu system. The sending sequence is LISTEN, SYN(V,0), CLOSE. The response of virtual machine 2 after invoking CLOSE system call command is mainly observed. If virtual machine 2 does not respond a FIN segment after invoking CLOSE, there is a vulnerability. 
 * Note1: LISTEN means notifying virtual machine 2 to system call listen as a server. CLOSE is also a system call command with different function. The remaining SYN(V,0) represent TCP packets of different flags. The first bit in the bracket represents the sequence number, and the second bit represents the acknowledgment number. Each bit is divided into two categories: V and INV. ​​In general​​, V means valid - this value is equal to the expected exact value of normal communication, and INV means invalid - this value does not exactly match the expected exact value and is within the receiving window range. 0 means - the value is 0.
 
 ## Files Preparation
@@ -17,12 +17,12 @@ Virtual machine 1 sends a packet or system call to virtual machine 2 of the Wind
 
 ## Reproduction steps
 1. In target system - virtual machine 2:
-   * Run `cl socketAdapter.c`. Compile socketAdapter.c and generate the socketAdapter.o executable file. 
-   * Run `.\socketAdapter -a 192.168.56.104 -c -l 5000 -p 20000`. Make target system in state of listening to commands.
+   * Run `gcc -Wall -pthread -o socketAdapter.o socketAdapter.c`. Compile socketAdapter.c and generate the socketAdapter.o executable file. 
+   * Run `sudo nice -19 ./socketAdapter.o -c -a 192.168.56.104 -l 5000 -p 20000`. Make target system in state of listening to commands.
 2. In test machine - virtual machine 1:
    * Run `sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP`. This step is to avoid interference caused by automatic packet sending by system kernel of virtual machine 1.
    * Run `sudo python poc.py`. The [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Windows-11/tcp-close-system-call-in-syn-received/poc.py) sends packets of specified types in order: LISTEN, SYN(V,0), CLOSE.
-3. Capture packets to observe responses of Windows system - virtual machine 2 during running [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Windows-11/tcp-close-system-call-in-syn-received/poc.py):
+3. Capture packets to observe responses of Ubuntu system - virtual machine 2 during running [poc.py](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Windows-11/tcp-close-system-call-in-syn-received/poc.py):
 ![packets](https://github.com/zq-star/TCP-Vuln-Report/blob/master/Windows-11/pictures/tcp-close-system-call-in-syn-received.png)
    * First, a socket connection is automatically established to pass command, and virtual machine 2 transmits actual communication port of local end，which is used for the following communication test of packets in order.
    * Virtual machine 1 sends LISTEN and SYN(V, 0), virtual machine 2 responds with SYN+ACK. At this time, virtual machine 2 is in SYN-RECEIVED STATE.
