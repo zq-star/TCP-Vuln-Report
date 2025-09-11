@@ -8,7 +8,7 @@ Ubuntu 20.04.4, kernel 5.15.0-124-generic has a system stability degradation vul
 * The two virtual machines can communicate over the network.
 
 ## Experiment Overview
-Virtual machine 1 sends a packet or system call to virtual machine 2 of the Ubuntu system. The sending sequence is LISTEN, SYN(V,0), CLOSE. The response of virtual machine 2 after invoking CLOSE system call command is mainly observed. If virtual machine 2 does not respond a FIN segment after invoking CLOSE, there is a vulnerability. 
+Virtual machine 1 sends a packet or system call to virtual machine 2 of the Ubuntu system. The sending sequence is LISTEN, SYN(V,0), CLOSE. The response of virtual machine 2 after invoking CLOSE system call command is mainly observed. If virtual machine 2 does not respond with a FIN segment after invoking CLOSE, there is a vulnerability. 
 * Note1: LISTEN means notifying virtual machine 2 to system call listen as a server. CLOSE is also a system call command with different function. The remaining SYN(V,0) represent TCP packets of different flags. The first bit in the bracket represents the sequence number, and the second bit represents the acknowledgment number. Each bit is divided into two categories: V and INV. ​​In general​​, V means valid - this value is equal to the expected exact value of normal communication, and INV means invalid - this value does not exactly match the expected exact value and is within the receiving window range. 0 means - the value is 0.
 
 ## Files Preparation
