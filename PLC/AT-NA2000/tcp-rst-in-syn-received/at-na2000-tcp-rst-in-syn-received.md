@@ -4,7 +4,7 @@ PLC AT_NA2000 from Nanda Automation Technology vendor has a denial of service vu
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC AT_NA2000: TCP communication open port - 102; IP2 - 192.168.1.76
+* PLC AT_NA2000: TCP communication open port - 502; IP2 - 192.168.1.76
 * The test host and PLC AT_NA2000 are directly connected via a network cable.
 
 ## Reproduction steps
