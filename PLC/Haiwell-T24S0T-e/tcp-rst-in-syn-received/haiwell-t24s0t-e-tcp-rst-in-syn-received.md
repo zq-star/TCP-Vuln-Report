@@ -4,7 +4,7 @@ PLC Haiwell T24S0T_E with firmware version V2.2.13 has a denial of service vulne
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC Haiwell T24S0T_E: TCP communication open port - 102; IP2 - 192.168.1.24
+* PLC Haiwell T24S0T_E: TCP communication open port - 502; IP2 - 192.168.1.24
 * The test host and PLC Haiwell T24S0T_E are directly connected via a network cable.
 
 ## Reproduction steps
