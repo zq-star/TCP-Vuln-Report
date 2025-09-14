@@ -4,7 +4,7 @@ Delta PLC DVP80ES3 with firmware version v01.06.00 has a denial of service vulne
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC DVP80ES3: TCP communication open port - 102; IP2 - 192.168.1.5
+* PLC DVP80ES3: TCP communication open port - 502; IP2 - 192.168.1.5
 * The test host and PLC DVP80ES3 are directly connected via a network cable.
 
 ## Reproduction steps
