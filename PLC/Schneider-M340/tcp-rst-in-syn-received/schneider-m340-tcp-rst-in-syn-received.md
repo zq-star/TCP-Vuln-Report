@@ -4,7 +4,7 @@ Schneider Modicon M340 with firmware version SV03.60 has a denial of service vul
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC M340: TCP communication open port - 102; IP2 - 192.168.1.34
+* PLC M340: TCP communication open port - 502; IP2 - 192.168.1.34
 * The test host and PLC M340 are directly connected via a network cable.
 
 ## Reproduction steps
