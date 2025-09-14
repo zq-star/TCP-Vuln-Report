@@ -4,7 +4,7 @@ PLC Mitsubishi Fx5uj with firmware version v1.011 has a denial of service vulner
 # Reproduction
 ## Environment
 * Test host: IP1 - 192.168.1.31
-* PLC Fx5uj: TCP communication open port - 102; IP2 - 192.168.1.230
+* PLC Fx5uj: TCP communication open port - 502; IP2 - 192.168.1.230
 * The test host and PLC Fx5uj are directly connected via a network cable.
 
 ## Reproduction steps
