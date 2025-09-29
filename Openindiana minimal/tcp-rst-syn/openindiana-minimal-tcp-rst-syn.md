@@ -1,6 +1,9 @@
 # Description
 Openindiana, kernel SunOS 5.11 has a denial of service vulnerability. For the processing of TCP packets with RST or SYN flag set, Openindiana has a wide acceptable range of sequence numbers. It does not require the sequence number to exactly match the next expected sequence value, just to be within the current receive window, which violates RFC5961. This flaw allows attackers to send multiple random TCP RST/SYN packets to hit the acceptable range of sequence numbers, thereby interrupting normal connections and causing a denial of service attack.
 
+# Metadata
+* CVE-2025-56233
+
 # Reproduction
 ## Environment
 * Test machine - virtual machine 1: The system is not limited, such as Ubuntu system. Python, scapy, pcapy, impacket environments are installed. IP1: 192.168.56.111 
@@ -30,6 +33,9 @@ Virtual machine 1 sends a packet or system call to virtual machine 2 of the Open
    * Virtual machine 1 continues to send PUSH+ACK(V, V) with a 1-byte payload. Virtual machine 2 responds with a valid ACK, indicating that data can be transmitted normally.
    * Virtual machine 1 sends multiple RST or SYN packets with different sequence numbers.Generate an initial sequence number within 0 - current receive window value, and increment by the window value to traverse all window intervals in entire sequence number space. The window size tested is 65392. If virtual machine 1 selects to send the RST packet, virtual machine 2 does not respond. If virtual machine 1 selects to send the SYN packet, virtual machine 2 replies with RST+ACK. (For intuitiveness, the two images above shows the RST or SYN packet directly sent with a sequence number within the receive window.)
    * Virtual machine 1 continues to send PUSH+ACK(V, V) for normal communication. Virtual machine 2 responds with RST, indicating that communication has been interrupted, causing a denial of service attack.
+
+# Credit
+Qian Zou, Ke Xu, Xuewei Feng, Qi Li, Xueying Li, Gang Jin
   
 [^socketAdapterCode]: Minor changes based on work of [ Fiterău-Broştean, Paul, Ramon Janssen, and Frits Vaandrager. "Combining model learning and model checking to analyze TCP implementations." Computer Aided Verification: 28th International Conference, CAV 2016, Toronto, ON, Canada, July 17-23, 2016, Proceedings, Part II 28. Springer International Publishing, 2016. ]
 
